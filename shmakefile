@@ -1,0 +1,21 @@
+# shmakefile
+
+# Define the dependencies and their build commands
+dependency1.txt:
+	echo "Creating dependency1.txt"
+	touch dependency1.txt
+
+dependency2.txt:
+	echo "Creating dependency2.txt"
+	touch dependency2.txt
+
+target1: dependency1.txt
+	echo "Building target1"
+	touch target1
+
+target2: dependency2.txt
+	echo "Building target2"
+	touch target2
+
+# Define an 'all' target if needed
+all: target1 target2
