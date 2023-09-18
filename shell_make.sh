@@ -7,6 +7,7 @@ else
     targets=("$@")
 fi
 
+built_targets=()
 # Function to build a target and its dependencies
 build_target() {
     local target="$1"
@@ -24,7 +25,7 @@ build_target() {
         # Check if the target itself needs to be built
         if should_build_target "$target" "$dependencies"; then
             build_command "$target"
-            touch "$target"  # Mark the target as built
+            built_targets+=($target)
         fi
     else
         echo "Error: Target '$target' not found in shmakefile"
@@ -38,7 +39,7 @@ should_build_target() {
     local dependencies="$2"
 
     # Check if the target is missing
-    if [ ! -e "$target" ]; then
+    if  ! is_in_array "$target"; then
         return 0
     fi
 
@@ -52,7 +53,17 @@ should_build_target() {
     return 1
 }
 
-# Function to execute the build command for a target
+is_in_array() {
+    local target="$1"
+    for built_target in "${built_targets[@]}"; do
+        if [ "$built_target" = "$target" ]; then
+            return 0
+        fi
+    done
+    return 1
+}
+# Function to execute the build command for a target   	fi 
+
 build_command() {
     local target="$1"
     echo $target
